@@ -20,14 +20,21 @@ const sushinize = node => {
 };
 
 // ボタンを押すなどして要素に変更があったら再びSushiに変更する
-const observe = (records, observer) => {
+const handleObserver = (records, observer) => {
     observer.disconnect();
     sushinize(records[0].target);
     observer.observe(records[0].target, {attributes: true});
 };
 
 // LGTMのSVG要素をそれぞれSushiに変更し、要素の変更を監視する
-document.querySelectorAll('*[class*="like"] svg').forEach(image => {
+const images = document.querySelectorAll('*[class*="like"] svg, .ItemLink__status svg');
+images.forEach(image => {
     sushinize(image);
-    new MutationObserver(observe).observe(image, {attributes: true});
+    new MutationObserver(handleObserver).observe(image, {attributes: true});
+});
+
+// 文字列のLGTMをSushiに置換する
+const texts = document.querySelectorAll('.userPopularItems_likeUnit');
+texts.forEach(text => {
+    text.textContent = "Sushi";
 });
