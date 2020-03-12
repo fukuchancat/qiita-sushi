@@ -34,7 +34,9 @@ images.forEach(image => {
 });
 
 // 文字列のLGTMをSushiに置換する
-const texts = document.querySelectorAll('.userPopularItems_likeUnit');
+const texts = document.querySelectorAll('.userPopularItems_likeUnit, .notification_actionWrapper span.bold:last-of-type');
 texts.forEach(text => {
-    text.textContent = "Sushi";
+    if (text.textContent === "LGTM") {
+        text.textContent = "Sushi";
+    }
 });
