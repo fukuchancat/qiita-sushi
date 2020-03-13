@@ -59,5 +59,5 @@ dynamicNodes.forEach(node => {
 
 // 回転SushiのCSSアニメーションを定義
 const style = document.createElement('style');
-style.innerText = '.liked svg.sushi-go-round { animation: sushi-go-round 1s ease; } @keyframes sushi-go-round { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }';
+style.innerText = '.liked svg.sushi-go-round, svg.sushi-go-round[color="#fff"] { animation: sushi-go-round 1s ease; } @keyframes sushi-go-round { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }';
 document.head.append(style);
