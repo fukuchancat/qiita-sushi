@@ -33,7 +33,7 @@ const sushinize = node => {
     });
 
     // 文字列のLGTMをSushiに置換する
-    const texts = node.querySelectorAll('.userPopularItems_likeUnit, .notification_actionWrapper span.bold:last-of-type, .tst-ArticleList_subLabel, a[href*=like], .ms-ItemHeader_likedCount');
+    const texts = node.querySelectorAll('.userPopularItems_likeUnit, .notification_actionWrapper span.bold:last-of-type, a[href*=like], .ms-ItemHeader_likedCount, .op-CounterItem_name, *[class*="Label"]');
     texts.forEach(text => {
         text.textContent = text.textContent.replace('LGTM', 'Sushi');
     });
