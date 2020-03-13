@@ -19,31 +19,45 @@ const replaceSvg = svg => {
     svg.innerHTML = innerHTML;
 };
 
-// SVG要素やテキストのLGTMを発見し、全てSUSHIに変更するメソッド
+// SVG要素やテキストのLGTMを発見し、全てSushiに変更するメソッド
 const sushinize = node => {
     // LGTMのSVG要素をそれぞれSushiに変更し、要素の変更を監視する
     const images = node.querySelectorAll('*[class*="like"] svg, .ItemLink__status svg, .ms-ItemList_counts svg');
     images.forEach(image => {
+        // Sushiに変更する
         replaceSvg(image);
+
+        // 属性の変更を監視
         new MutationObserver((records, observer) => {
+            // 属性変更時に発動するメソッドの中で属性を変更し無限ループに陥るので一旦observeを停止する
             observer.disconnect();
+
+            // Sushiに再変更する・Sushiを1回転させる
             replaceSvg(records[0].target);
+            records[0].target.classList.add("sushi-go-round");
+
+            // observeを再開
             observer.observe(records[0].target, {attributes: true});
         }).observe(image, {attributes: true});
     });
 
     // 文字列のLGTMをSushiに置換する
-    const texts = node.querySelectorAll('.userPopularItems_likeUnit, .notification_actionWrapper span.bold:last-of-type, a[href*=like], .ms-ItemHeader_likedCount, .op-CounterItem_name, *[class*="Label"]');
+    const texts = node.querySelectorAll('.userPopularItems_likeUnit, .notification_actionWrapper span.bold:last-of-type, li.presentation a[href*=like], .ms-ItemHeader_likedCount, .op-CounterItem_name, *[class*="Label"]');
     texts.forEach(text => {
         text.textContent = text.textContent.replace('LGTM', 'Sushi');
     });
 };
 
-// 現在読み込まれているdocument中のLGTMを全てSUSHIに置換
+// 現在読み込まれているdocument中のLGTMを全てSushiに置換
 sushinize(document);
 
-// コメントなど遅延読み込みされる動的な要素中のLGTMを読み込まれると同時に全てSUSHIに置換
+// コメントなど遅延読み込みされる動的な要素中のLGTMを読み込まれると同時に全てSushiに置換
 const dynamicNodes = document.querySelectorAll('#comments, *[class*=List_view], div[data-hyperapp-app="Milestones"]');
 dynamicNodes.forEach(node => {
     new MutationObserver(() => sushinize(node)).observe(node, {childList: true});
 });
+
+// 回転SushiのCSSアニメーションを定義
+const style = document.createElement('style');
+style.innerText = '.liked svg.sushi-go-round { animation: sushi-go-round 1s ease; } @keyframes sushi-go-round { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }';
+document.head.append(style);
