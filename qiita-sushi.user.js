@@ -29,7 +29,7 @@ const sushinize = node => {
 
         // 属性の変更を監視
         new MutationObserver((records, observer) => {
-            // 属性変更時に発動するメソッドの中で属性を変更し無限ループに陥るので一旦observeを停止する
+            // 属性変更時に発動するメソッドの中で属性を変更し無限再帰に陥るので一旦observeを停止する
             observer.disconnect();
 
             // Sushiに再変更する・Sushiを1回転させる
@@ -42,7 +42,7 @@ const sushinize = node => {
     });
 
     // 文字列のLGTMをSushiに置換する
-    const texts = node.querySelectorAll('.userPopularItems_likeUnit, .notification_actionWrapper span.bold:last-of-type, li.presentation a[href*=like], .ms-ItemHeader_likedCount, .op-CounterItem_name, *[class*="Label"]');
+    const texts = node.querySelectorAll('.userPopularItems_likeUnit, .notification_actionWrapper span.bold:last-of-type, li[role="presentation"] a[href*=like], .ms-ItemHeader_likedCount, .op-CounterItem_name, *[class*="Label"], .msg-Item_body');
     texts.forEach(text => {
         text.textContent = text.textContent.replace('LGTM', 'Sushi');
     });
@@ -52,7 +52,7 @@ const sushinize = node => {
 sushinize(document);
 
 // コメントなど遅延読み込みされる動的な要素中のLGTMを読み込まれると同時に全てSushiに置換
-const dynamicNodes = document.querySelectorAll('#comments, *[class*=List_view], div[data-hyperapp-app="Milestones"]');
+const dynamicNodes = document.querySelectorAll('#comments, *[class*=List_view], div[data-hyperapp-app="Milestones"], div[id*="Snackbar"]');
 dynamicNodes.forEach(node => {
     new MutationObserver(() => sushinize(node)).observe(node, {childList: true});
 });
