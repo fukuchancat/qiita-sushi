@@ -57,7 +57,11 @@ sushinize(document);
 // コメントなど遅延読み込みされる動的な要素中のLGTMを読み込まれると同時に全てSushiに置換
 const dynamicNodes = document.querySelectorAll('#comments, *[class*=List_view], div[data-hyperapp-app="Milestones"], div[id*="Snackbar"]');
 dynamicNodes.forEach(node => {
-    new MutationObserver(() => sushinize(node)).observe(node, {childList: true});
+    new MutationObserver((records, observer) => {
+        observer.disconnect();
+        sushinize(node);
+        observer.observe(node, {childList: true});
+    }).observe(node, {childList: true});
 });
 
 // 回転SushiのCSSアニメーションを定義
