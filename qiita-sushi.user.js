@@ -45,9 +45,13 @@ const sushinize = node => {
     });
 
     // 文字列のLGTMをSushiに置換する
-    const texts = node.querySelectorAll('.userPopularItems_likeUnit, .notification_actionWrapper span.bold:last-of-type, li[role="presentation"] a[href*="like"], .ms-ItemHeader_likedCount, .op-CounterItem_name, *[class*="Label"], .msg-Item_body, *[class*="UserAnalyzeResult__TagStatsTitle"], a.st-Dropdown_item[href*="lgtms"]');
+    const texts = node.querySelectorAll('.userPopularItems_likeUnit, .notification_actionWrapper span.bold:last-of-type, li[role="presentation"] a[href*="like"], .ms-ItemHeader_likedCount, .op-CounterItem_name, *[class*="Label"], .msg-Item_body, *[class*="UserAnalyzeResult__TagStatsTitle"], a.st-Dropdown_item[href*="lgtm"], a.st-Dropdown_item[href*="like"]');
     texts.forEach(text => {
-        text.textContent = text.textContent.replace('LGTM', 'Sushi');
+        text.childNodes.forEach(child => {
+            if (child.nodeType === Node.TEXT_NODE) {
+                child.textContent = child.textContent.replace("LGTM", "Sushi");
+            }
+        });
     });
 };
 
