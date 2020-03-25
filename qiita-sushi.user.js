@@ -22,7 +22,7 @@ const replaceSvg = svg => {
 // SVG要素やテキストのLGTMを発見し、全てSushiに変更するメソッド
 const sushinize = node => {
     // LGTMのSVG要素をそれぞれSushiに変更し、要素の変更を監視する
-    const images = node.querySelectorAll('*[class*="like"] svg:not([data-sushinized]), .ItemLink__status svg:not([data-sushinized]), .ms-ItemList_counts svg:not([data-sushinized])');
+    const images = node.querySelectorAll('*[class*="like"] svg:not([data-sushinized]), .ItemLink__status svg:not([data-sushinized]), .ms-ItemList_counts svg:not([data-sushinized]), svg[class*="Lgtm"]:not([data-sushinized])');
     images.forEach(image => {
         // Sushiに変更する
         replaceSvg(image);
@@ -45,7 +45,7 @@ const sushinize = node => {
     });
 
     // 文字列のLGTMをSushiに置換する
-    const texts = node.querySelectorAll('.userPopularItems_likeUnit, .notification_actionWrapper span.bold:last-of-type, li[role="presentation"] a[href*=like], .ms-ItemHeader_likedCount, .op-CounterItem_name, *[class*="Label"], .msg-Item_body');
+    const texts = node.querySelectorAll('.userPopularItems_likeUnit, .notification_actionWrapper span.bold:last-of-type, li[role="presentation"] a[href*="like"], .ms-ItemHeader_likedCount, .op-CounterItem_name, *[class*="Label"], .msg-Item_body, *[class*="UserAnalyzeResult__TagStatsTitle"], a.st-Dropdown_item[href*="lgtms"]');
     texts.forEach(text => {
         text.textContent = text.textContent.replace('LGTM', 'Sushi');
     });
@@ -55,7 +55,7 @@ const sushinize = node => {
 sushinize(document);
 
 // コメントなど遅延読み込みされる動的な要素中のLGTMを読み込まれると同時に全てSushiに置換
-const dynamicNodes = document.querySelectorAll('#comments, *[class*=List_view], div[data-hyperapp-app="Milestones"], div[id*="Snackbar"]');
+const dynamicNodes = document.querySelectorAll('#comments, *[class*="List_view"], div[data-hyperapp-app="Milestones"], div[id*="Snackbar"], div[class*="UserMain__Content"], div[class*="UserAnalyzeResult"]');
 dynamicNodes.forEach(node => {
     new MutationObserver((records, observer) => {
         observer.disconnect();
