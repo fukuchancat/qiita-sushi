@@ -22,7 +22,7 @@ const replaceSvg = svg => {
 // SVG要素やテキストのLGTMを発見し、全てSushiに変更するメソッド
 const sushinize = node => {
     // LGTMのSVG要素をそれぞれSushiに変更し、要素の変更を監視する
-    const images = node.querySelectorAll('*[class*="like"] svg, .ItemLink__status svg, .ms-ItemList_counts svg');
+    const images = node.querySelectorAll('*[class*="like"] svg:not([data-sushinized]), .ItemLink__status svg:not([data-sushinized]), .ms-ItemList_counts svg:not([data-sushinized])');
     images.forEach(image => {
         // Sushiに変更する
         replaceSvg(image);
@@ -39,6 +39,9 @@ const sushinize = node => {
             // observeを再開
             observer.observe(records[0].target, {attributes: true});
         }).observe(image, {attributes: true});
+
+        // 何重にも監視するのを防止するため、data-sushinized属性を追加しておく
+        image.dataset.sushinized = "1";
     });
 
     // 文字列のLGTMをSushiに置換する
